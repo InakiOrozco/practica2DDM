@@ -90,7 +90,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
 
   Future _recieveResponse(String file) async {
     emit(MainPageFinishedState());
-    print("Will start sending");
+    print("Enviando a la API");
     http.Response response = await http.post(
       Uri.parse('https://api.audd.io/'),
       headers: {'Content-Type': 'multipart/form-data'},
