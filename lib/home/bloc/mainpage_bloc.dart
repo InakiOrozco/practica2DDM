@@ -61,29 +61,24 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   Future<String?> doRecording(String tmpPath, Emitter<dynamic> emit) async {
     final Record _record = Record();
     try {
-      //get permission
       bool permission = await _record.hasPermission();
       print("Permission: $permission");
       if (permission) {
-        //start recording
         emit(MainPageListeningState());
         await _record.start(
           path: '${tmpPath}/test.m4a',
-          encoder: AudioEncoder.AAC, // by default
-          bitRate: 128000, // by default
-          samplingRate: 44100, // by default
+          encoder: AudioEncoder.AAC,
+          bitRate: 128000,
+          samplingRate: 44100,
         );
-        //wait for 5 seconds
         await Future.delayed(Duration(seconds: 7));
-        //stop recording
         return await _record.stop();
-        //send to server
       } else {
         emit(MainPageErrorState());
         print("Permission denied");
       }
     } catch (e) {
-      //print(e);
+      print(e);
     }
     return null;
   }
@@ -119,8 +114,6 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
 
 Future<String> fileConvert(File file) async {
   List<int> fileBytes = await file.readAsBytes();
-  //print("File bytes: $fileBytes");
   String base64String = base64Encode(fileBytes);
-  //print("Base64 string: $base64String");
   return base64String;
 }
